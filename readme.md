@@ -45,13 +45,13 @@
       - When writing the file, adds some wrapper code around
         the script content.
       - `loop do` and `sleep` are added in order to loop it every N milliseconds (which is determined by the interval column)
-      - `$0 = "#{tempfile_name}" is used to set the process name for the script. Setting this makes it easier to find the script's pid using `ps aux`.
+      - `$0 = "#{tempfile_name}"` is used to set the process name for the script. Setting this makes it easier to find the script's pid using `ps aux`.
       - Next the script is run by using system exec (backticks) to spin up a rails console and issuing it a `load` command to have it run the tempfile.
-      - It turns out that the most difficult part of spawning subprocesses is doing in a way that enables stopping them. I experiemented with a number of commands, including `fork`, `spawn`, and `thread`. The returned value of these methods is a PID, but I found that the actual PID of the process dynamically changed and so this can't dependaby be used to stop the background job. Somewhat confusingly, a method calling these commands (i.e. `spawn`) will continue on to the next statement without waiting for the subprocess to compete, but if the method is run from a REPL, the prompt won't be returned to the user. I fixed this by plugging in the returned PID to `Process.detach(pid)`. I ended up going with `spawn` because it offers a `pgroup: true` option. This option tells it to start a new "process group" for the spawned command. I'm not sure how much it really does but it supposedly prevents orphaning child processes. 
+      - It turns out that the most difficult part of spawning subprocesses is doing in a way that enables stopping them. I experiemented with a number of commands, including `fork`, `spawn`, and `thread`. The returned value of these methods is a PID, but I found that the actual PID of the process dynamically changed and so this can't dependaby be used to stop the background job. A Euby method calling these commands (i.e. `spawn`) will continue on to the next statement without waiting for the subprocess to compete, but if the method is run from a REPL, the prompt won't be returned to the user. I fixed this by plugging in the returned PID to `Process.detach(pid)`. I ended up going with `spawn` because it offers a `pgroup: true` option. This option tells it to start a new "process group" for the spawned command. I'm not sure how much it really does but it supposedly prevents orphaning child processes. 
       - Finally, the Ticker record's `process_name` column is updated to the tempfile name.
-      - There would some bugs I didn't solve. When a background job ran `curl`, the server would show all the curl requests in it's logs. I tried `> /dev/null` but still wasn't able to hide these. A second bug is orphan processes. I can't say for sure what causes this issue, but I suspect that certain errors being raised in the background job might cause it. 
+      - There are some undesired effects I didn't bother fixing. The background scripts' output is still visible though I tried to hide it with `> /dev/null`. Also, the `kill` command isn't 100% foolproof. 
 
-  - **`stop`**
+  - **`kill`**
     - Thankfully much simpler than `begin`
     - Basically, a running background job's PID is looked up by a ticker's `process_name`. 
     - The following command is used for this: `ps aux | grep #{process_name.first(25)} | awk 'NR==1{print $2}`
