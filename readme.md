@@ -1,3 +1,26 @@
+## How to run
+
+- Note you need Postgres server set up.
+- Tested with Ruby 2.4.0
+
+Run the following commands:
+
+```sh
+git clone https://github.com/MaxPleaner/tickers/;
+cd tickers;
+bundle;
+rake db:create db:migrate; 
+```
+
+Then customize `config/application.yml` with your preferred username / password.
+
+Note that the default username is "max" and the password is "supersecret". 
+
+Next run `rails server` and visit localhost:3000. 
+
+
+## About
+
 - I was reading about Teletext for the first time and I kind of liked the aesthetic of the Teletext interface.
 
 - I found the [telestrap](http://code.steadman.io/telestrap/) bootstrap theme which I think is super cool.
