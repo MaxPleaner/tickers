@@ -30,6 +30,13 @@ Basically there's a couple steps to making a realtime "ticker":
     - The 'content' is a URI encoded string, which becomes the displayed text in the ticker.
     - For example, with a script named "MyScript", the command `curl localhost:3000/update_output?name=MyScript&output=#{SecureRandom.urlsafe_base64}` will change the displayed text on the  "MyScript" ticker to a random string. If you set this to run every 1000 milliseconds (via the `interval` value chosen), then a new random string will appear every second. 
     - You can use an `id` param in place of `name` - this is necessary when updating a script's name.
+3. From the main page, click one of the ticker names to toggle open its output.
+
+## Warning
+
+Press the "killall" button on the main page before closing the Rails server.
+
+Closing the server does not stop the processes. 
 
 
 ## About
