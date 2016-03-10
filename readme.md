@@ -29,8 +29,9 @@ Basically there's a couple steps to making a realtime "ticker":
     - Set the 'name' param on this route to be the same as the name you give the script.
     - The 'content' is a URI encoded string, which becomes the displayed text in the ticker.
     - For example, with a script named "MyScript", the command `curl localhost:3000/update_output?name=MyScript&output=#{SecureRandom.urlsafe_base64}` will change the displayed text on the  "MyScript" ticker to a random string. If you set this to run every 1000 milliseconds (via the `interval` value chosen), then a new random string will appear every second. 
-    - You can use an `id` param in place of `name` - this is necessary when updating a script's name. 
-
+    - You can use an `id` param in place of `name` - this is necessary when updating a script's name.
+
+
 ## About
 
 - I was reading about Teletext for the first time and I kind of liked the aesthetic of the Teletext interface.
