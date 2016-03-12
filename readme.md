@@ -12,9 +12,9 @@ bundle;
 rake db:create db:migrate; 
 ```
 
-Then customize `config/application.yml` with your preferred username / password.
+Then customize `config/application.yml` with your preferred username / password (for dev mode, use ENV vars if deploying)
 
-Note that the default username is "max" and the password is "supersecret". 
+Note that the default username is "admin" and the password is "password". This is used for basic HTTP auth as well as the `/update_output` route (explained later). 
 
 Next run `rails server` and visit localhost:3000. 
 
@@ -26,6 +26,7 @@ Basically there's a couple steps to making a realtime "ticker":
 2. In the text editor, write a Ruby script, but folow some specific rules:
   - The return value of this script is ignored.
   - Instead, the  `curl localhost:3000/update_output` command is used:
+    - Set the 'password' param which is the same used for HTTP auth.
     - Set the 'name' param on this route to be the same as the name you give the script.
     - The 'content' is a URI encoded string, which becomes the displayed text in the ticker.
     - For example, with a script named "MyScript", the command `curl localhost:3000/update_output?name=MyScript&output=#{SecureRandom.urlsafe_base64}` will change the displayed text on the  "MyScript" ticker to a random string. If you set this to run every 1000 milliseconds (via the `interval` value chosen), then a new random string will appear every second. 
@@ -58,7 +59,7 @@ Make sure to precompile assets for production and commit before deploying. `env 
 - My reading led me to telegraphs, "ticker tape parades",
   and how historical "stock tickers" have transformed into high-speed trading. 
 
-- I decided to make a site which shows the live-updating output of commands being run on an interval.
+- I decided to make a site which shows the live-updating output of commands being run on an interval, sort of akin to a stock ticker. 
 
 - It'd been a while since I used Bootstrap so I started by making a little "cheat sheet" for basic usage of
   the Telestrap theme. You can see this at `/sample`.

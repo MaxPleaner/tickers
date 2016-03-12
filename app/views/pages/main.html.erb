@@ -32,6 +32,11 @@
                 <a href="killall">killall</a>
                 <br><br>
             </div>
+            <% if Ticker.count.eql?(0) %>
+                <p><b>No tickers yet</b></p>
+            <% else %>
+                <p><b>Click a ticker name to toggle it open/close</b></p>
+            <% end %>
             <% Ticker.all.each_slice(1) do |slice| %>
                 <div class="row">
                     <% slice.each do |ticker| %>
