@@ -7,4 +7,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-Ticker.create
+root_url = Rails.env.production? ? "maxp-tickers.herokuapp.com" : "localhost:3000"
+self.create(
+  name: "test",
+  interval: 1000,
+  content: "`curl \"#{root_url}/update_output?name=test&password=#{ENV["password"]}&output=\#{SecureRandom.urlsafe_base64}\"`\r\n\r\n# do not use \"exit\"\r\n# and do not raise any errors, or zombie processes may result\r\n"
+)

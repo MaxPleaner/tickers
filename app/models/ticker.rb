@@ -17,6 +17,7 @@ class Ticker < ActiveRecord::Base
     super(val)
   end
   def kill
+    return unless process_name
     2.times {
       pid = `ps aux | grep #{process_name.first(25)} | awk 'NR==1{print $2}'`.chomp
       `kill -9 #{pid}`

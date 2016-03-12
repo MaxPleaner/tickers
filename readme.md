@@ -9,7 +9,7 @@ Run the following commands:
 git clone https://github.com/MaxPleaner/tickers/;
 cd tickers;
 bundle;
-rake db:create db:migrate; 
+rake db:create db:migrate db:seed; 
 ```
 
 Then customize `config/application.yml` with your preferred username / password (for dev mode, use ENV vars if deploying)
@@ -44,7 +44,9 @@ Closing the server does not stop the processes.
 This can be deployed to Heroku as-is, i.e. no need to set up
 add-ons or anything.
 
-You can set the username and password using `heroku config:set` instead of `application.yml`. 
+run: `heroku create MyAppName`, `git push heroku master`, `heroku run rake db:create db:migrate db:seed`, `heroku config:set username=MyUsername password=MyPassword`, then `heroku open`.
+
+Note that for production, username and password using `heroku config:set` instead of `application.yml`. 
 
 Make sure to precompile assets for production and commit before deploying. `env RAILS_ENV=production RAKE_ENV=production rake assets:precompile`
 
