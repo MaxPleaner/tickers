@@ -4,6 +4,7 @@ class Ticker < ActiveRecord::Base
   @queue = :file_serve
   def self.killall
     `pkill -f #{@@process_name_constant}`
+    update_all(process_name: nil)
   end
   def attributes
     {
