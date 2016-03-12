@@ -38,6 +38,14 @@ Press the "killall" button on the main page before closing the Rails server.
 
 Closing the server does not stop the processes. 
 
+## Deploying to heroku
+
+This can be deployed to Heroku as-is, i.e. no need to set up
+add-ons or anything.
+
+You can set the username and password using `heroku config:set` instead of `application.yml`. 
+
+Make sure to precompile assets for production and commit before deploying. `env RAILS_ENV=production RAKE_ENV=production rake assets:precompile`
 
 ## About
 
@@ -53,30 +61,15 @@ Closing the server does not stop the processes.
 - I decided to make a site which shows the live-updating output of commands being run on an interval.
 
 - It'd been a while since I used Bootstrap so I started by making a little "cheat sheet" for basic usage of
-  the Telestrap theme
+  the Telestrap theme. You can see this at `/sample`.
 
-- I was considering using Node for the front-end and Rails for the API. I looked into
-  [faye-browser](http://faye.jcoglan.com/browser.html) and saw that it required a Faye server to be running as well.
-  I decided to skip Faye and use Rails for the front-end tool because I'd already made
-  [a gem](http://github.com/maxpleaner/socket_helpers) for using
-  [websocket-rails](https://github.com/websocket-rails/websocket-rails) servers.
-
-- Next I generated a Rails app and moved the Telestrap assets in.
+- I generated a Rails app and moved the Telestrap assets in.
 
 - Next I worked on views for the "Ticker" scaffold. I started with just "create" and "index" actions.
-  For the "create" form, I used [ace.js](https://ace.c9.io/#nav=about) with Ruby syntax highlighting.
+  For the "create" form, I used [ace.js](https://ace.c9.io/#nav=about) with Ruby syntax highlighting and a little jQuery to connect it with a textarea (see 'onchange' in application.js)
 
-- Next I worked on asynchronously executing the "Ticker" scripts. My first plan was to use Resuqe.
-  I'd done this at a previous job and I thought it'd be a performant solution. I ended up encountering a lot
-  of issues and eventually decided to try a different approach. Specically, the
-  [redis_multi_queue](http://www.rubydoc.info/github/resque/resque/Resque/Failure/RedisMultiQueue) error handler
-  did not work out of the box and I had to fork [resque-web](https://github.com/MaxPleaner/resque-web/) to get it to
-  start. I managed to start a looped background job on an interval, but it still didn't show up in resque-web and I
-  couldn't figure out how to dynamically add scheduled jobs using
-  [resque-scheduler](https://github.com/resque/resque-scheduler). I considered using Cron but I needed a minimum
-  interval time of less than a minute. Looking at it now [rufus-scheduler](https://github.com/jmettraux/rufus-scheduler) might have worked - it seems better documented.
-
-  - Anyway, I ended up making my own implementation using shell commands. See `app/models/ticker.rb` for the code.
+- Next I worked on asynchronously executing the "Ticker" scripts.
+- I ended up making my own implementation using shell commands. See `app/models/ticker.rb` for the code.
 
   - Basically a Ticker object has a "content" column which contains a ruby script in a string. An "interval" column represents how often the script should be run (in milliseconds). It also has a "process_name" column which is programmatically set when the background job begins.
 
@@ -90,9 +83,9 @@ Closing the server does not stop the processes.
       - `loop do` and `sleep` are added in order to loop it every N milliseconds (which is determined by the interval column)
       - `$0 = "#{tempfile_name}"` is used to set the process name for the script. Setting this makes it easier to find the script's pid using `ps aux`.
       - Next the script is run by using system exec (backticks) to spin up a rails console and issuing it a `load` command to have it run the tempfile.
-      - It turns out that the most difficult part of spawning subprocesses is doing in a way that enables stopping them. I experiemented with a number of commands, including `fork`, `spawn`, and `thread`. The returned value of these methods is a PID, but I found that the actual PID of the process dynamically changed and so this can't dependaby be used to stop the background job. A Euby method calling these commands (i.e. `spawn`) will continue on to the next statement without waiting for the subprocess to compete, but if the method is run from a REPL, the prompt won't be returned to the user. I fixed this by plugging in the returned PID to `Process.detach(pid)`. I ended up going with `spawn` because it offers a `pgroup: true` option. This option tells it to start a new "process group" for the spawned command. I'm not sure how much it really does but it supposedly prevents orphaning child processes. 
+      - It turns out that the most difficult part of spawning subprocesses is doing in a way that enables stopping them. I experiemented with a number of commands, including `fork`, `spawn`, and `thread`. The returned value of these methods is a PID, but I found that the actual PID of the process dynamically changed and so this can't dependaby be used to stop the background job. A Ruby method calling these commands (i.e. `spawn`) will continue on to the next statement without waiting for the subprocess to compete, but if the method is run from a REPL, the prompt won't be returned to the user. I fixed this by plugging in the returned PID to `Process.detach(pid)`. I ended up going with `spawn` because it offers a `pgroup: true` option. This option tells it to start a new "process group" for the spawned command. I'm not sure how much it really does but it supposedly prevents orphaning child processes. 
       - Finally, the Ticker record's `process_name` column is updated to the tempfile name.
-      - There are some undesired effects I didn't bother fixing. The background scripts' output is still visible though I tried to hide it with `> /dev/null`. Also, the `kill` command isn't 100% foolproof. 
+      - The background scripts' output is still visible though I tried to hide it with `> /dev/null`. Although this is probably a good thing, as background scripts would be very hard to debug without log output. 
 
   - **`kill`**
     - Thankfully much simpler than `begin`
