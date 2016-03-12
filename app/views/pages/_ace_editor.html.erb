@@ -9,7 +9,8 @@
 <%= ticker.content %>
 <% else %>
 # something like:
-# `curl "localhost:3000/update_output?name=ThisTickerName\&amp;output=#{SecureRandom.urlsafe_base64}"`
+output = SecureRandom.urlsafe_base64
+`curl "<%= ROOT_URL %>/update_output?password=<%= ENV["password"] %>\&amp;name=ThisTickerName\&amp;output=#{output}"`
 
 # do not use "exit"
 # and do not raise any errors, or zombie processes may result

@@ -22,11 +22,8 @@
 //= require socket_helpers
 //= require_tree .
 
-<% root_url = "localhost:3000" %>
-<% root_url = "maxp-tickers.herokuapp.com" if Rails.env.production? %>
-
 $(function(){
-  SocketHelpers.initialize(["ticker"], "<%= root_url %>/websocket")
+  SocketHelpers.initialize(["ticker"], "<%= ROOT_URL %>/websocket")
   
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");

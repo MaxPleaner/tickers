@@ -1,5 +1,7 @@
 Rails.application.configure do
 
+  ROOT_URl = "https://maxp-tickers.herokuapp.com"
+
   config.force_ssl = true
   # Settings specified here will take precedence over those in config/application.rb.
 

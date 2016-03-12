@@ -44,7 +44,9 @@ Closing the server does not stop the processes.
 This can be deployed to Heroku as-is, i.e. no need to set up
 add-ons or anything.
 
-run: `heroku create MyAppName`, `git push heroku master`, `heroku run rake db:create db:migrate db:seed`, `heroku config:set username=MyUsername password=MyPassword`, then `heroku open`.
+run: `heroku create MyAppName` then edit `production.rb` and change `ROOT_URL` there. 
+
+`git push heroku master`, `heroku run rake db:create db:migrate db:seed`, `heroku config:set username=MyUsername password=MyPassword`, then `heroku open`.
 
 Note that for production, username and password using `heroku config:set` instead of `application.yml`. 
 
