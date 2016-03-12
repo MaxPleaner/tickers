@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-root_url = Rails.env.production? ? "maxp-tickers.herokuapp.com" : "localhost:3000"
+root_url = Rails.env.production? ? "https://maxp-tickers.herokuapp.com" : "localhost:3000"
 Ticker.create(
   name: "test",
   interval: 1000,
