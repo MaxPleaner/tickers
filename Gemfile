@@ -63,6 +63,10 @@ gem "figaro"
 gem "mechanize"
 
  gem 'stock_quote' 
- gem 'spreadsheet' 
+ gem 'spreadsheet'
+  
+ # gem 'rubyXL' 
+ # very slow
 
- gem 'rubyXL' 
+ # gem 'gruff'
+ # skipping this, it only export to png 
