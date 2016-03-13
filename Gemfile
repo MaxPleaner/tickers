@@ -70,3 +70,5 @@ gem "mechanize"
 
  # gem 'gruff'
  # skipping this, it only export to png 
+
+ gem 'redditkit'
