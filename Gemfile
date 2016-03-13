@@ -61,3 +61,8 @@ gem "pry-rails"
 gem "oj"
 gem "figaro"
 gem "mechanize"
+
+ gem 'stock_quote' 
+ gem 'spreadsheet' 
+
+ gem 'rubyXL' 
