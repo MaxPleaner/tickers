@@ -41,11 +41,12 @@ Basically there's a couple steps to making a realtime "ticker":
 1. Go to the "create" page
 2. In the text editor, write a Ruby script, but folow some specific rules:
   - The return value of this script is ignored.
-  - Instead, the  `curl localhost:3000/update_output` command is used:
-    - Set the 'password' param which is the same used for HTTP auth.
-    - Set the 'name' param on this route to be the same as the name you give the script.
-    - The 'content' is a URI encoded string, which becomes the displayed text in the ticker.
-    - For example, with a script named "MyScript", the command `curl localhost:3000/update_output?name=MyScript&output=#{SecureRandom.urlsafe_base64}` will change the displayed text on the  "MyScript" ticker to a random string. If you set this to run every 1000 milliseconds (via the `interval` value chosen), then a new random string will appear every second. 
+  - Instead, the  `curl localhost:3000/update_output` command is used
+  - For example, with a script named "MyScript", the command `curl localhost:3000/update_output?password=password&name=MyScript&output=#{SecureRandom.urlsafe_base64}` will change the displayed text on the  "MyScript" ticker to a random string. If you set this to run every 1000 milliseconds (via the `interval` value chosen), then a new random string will appear every second. 
+  - For a further explanation of this /update_output endpoint:
+    - the 'password' param is the same used for HTTP auth.
+    - the 'name' param needs to be the same as the name you give the script.
+    - The 'content' param is a URI encoded string, which becomes the displayed text in the ticker.
     - You can use an `id` param in place of `name` - this is necessary when updating a script's name.
     - Note that `CGI::escape` should be used instead of `URI::escape` when passing data in a query paramter. 
 3. From the main page, click one of the ticker names to toggle open its output.
