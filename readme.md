@@ -1,3 +1,10 @@
+# Tickers
+
+#### Screenshots
+
+![screenshot 1](https://raw.githubusercontent.com/MaxPleaner/tickers/master/public/screenshot1.png)
+![screenshot 2](https://raw.githubusercontent.com/MaxPleaner/tickers/master/public/screenshot2.png)
+
 ## How to run
 
 - Note you need Postgres server set up.
