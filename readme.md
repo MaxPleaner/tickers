@@ -1,5 +1,14 @@
 # Tickers
 
+#### What is this?
+
+It's a website which allows users to write Ruby scripts in their browser.
+
+These scripts can be turned "on" and they will run on a user-supplied interval.
+
+The website uses websockets to show the scripts' outputs each time they run. 
+
+
 #### Screenshots
 
 ![screenshot 1](https://raw.githubusercontent.com/MaxPleaner/tickers/master/public/screenshot1.png)
