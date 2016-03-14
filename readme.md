@@ -111,8 +111,10 @@ Make sure to precompile assets for production and commit before deploying. `env 
       - It's one line is `pkill -f #{@@process_name_constant}` This kills all processes with a name partially matching the argument. 
       - TODO: run this on Rails server exit to ensure that the jobs don't keep running. 
 
-- After writing this background job system, I now needed a way for the background scripts to send updates to my websocket listeners. I tried using `WebsocketRails["channelName"].trigger` but found that it only worked when run from my Rails controller. So I made a Rails endpoint which calls this method, and called that endpoint from the background job using `curl`.
+- After writing this background job system, I now needed a way for the background scripts to send updates to my websocket listeners (I'm using [socket_helpers](https://github.com/maxpleaner/socket_helpers) for this). I tried using `WebsocketRails["channelName"].trigger` but found that it only worked when run from my Rails controller. So I made a Rails endpoint which calls this method, and called that endpoint from the background job using `curl`.
 
 - At this point I was pretty satisfied. I added an "edit" form. The heroku deploy was working fine with the Telestrap theme but I hadn't debugged the background job system yet.
 
 - Thanks for reading! Contribute if you want! 
+
+
