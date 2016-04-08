@@ -1,7 +1,6 @@
 class Ticker < ActiveRecord::Base
   @@process_name_constant = "tickers_process_" # used to find orphan processes
   validates :name, presence: true
-  @queue = :file_serve
   def self.killall
     `pkill -f #{@@process_name_constant}`
     update_all(process_name: nil)
